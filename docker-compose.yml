@@ -1,0 +1,63 @@
+version: "3.7"
+
+services:
+  openresty:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    image: openresty
+    container_name: openresty
+    volumes:
+      - ./nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf:ro
+      - ./logs/nginx:/var/log/nginx
+      - /home/twkim/lamis-pulmorad/build:/var/www/html/main
+    ports:
+      - 80:80
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:13.0.0
+    container_name: keycloak
+    restart: unless-stopped
+    environment:
+      - KEYCLOAK_USER=${KEYCLOAK_USER}
+      - KEYCLOAK_PASSWORD=${KEYCLOAK_PASSWORD}
+      - PROXY_ADDRESS_FORWARDING=true
+      - DB_VENDOR=POSTGRES
+      - DB_ADDR=postgres
+      - DB_DATABASE=keycloak
+      - DB_SCHEMA=public
+      - DB_USER=${POSTGRES_USER}
+      - DB_PASSWORD=${POSTGRES_PASSWORD}
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgres
+
+  orthanc:
+    image: jodogne/orthanc-plugins:1.9.3
+    container_name: orthanc
+    restart: unless-stopped
+    ports:
+      - 8042:8042
+    volumes:
+      - ./orthanc/conf.json:/etc/orthanc/orthanc.json:ro
+      - ./orthanc/storage:/var/lib/orthanc/db
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:13.2
+    hostname: postgres
+    container_name: postgres
+    volumes:
+      - ./postgresql:/docker-entrypoint-initdb.d
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_MULTIPLE_DATABASES=keycloak,orthanc
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+    driver: local
