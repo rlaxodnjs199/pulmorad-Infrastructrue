@@ -28,8 +28,12 @@ services:
       - DB_SCHEMA=public
       - DB_USER=${POSTGRES_USER}
       - DB_PASSWORD=${POSTGRES_PASSWORD}
+      #KEYCLOAK_IMPORT: /opt/jboss/keycloak/imports/realm-export.json -Dkeycloak.profile.feature.upload_scripts=enabled
     ports:
       - 8080:8080
+    volumes:
+      #- ./keycloak/realm:/opt/jboss/keycloak/imports
+      - ./keycloak/theme:/opt/jboss/keycloak/themes/pulmorad
     depends_on:
       - postgres
 
