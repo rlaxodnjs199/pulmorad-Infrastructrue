@@ -3,13 +3,13 @@ version: "3.7"
 services:
   openresty:
     build:
-      context: ./
+      context: ./openresty
       dockerfile: ./Dockerfile
     image: openresty
     container_name: openresty
     volumes:
-      - ./nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf:ro
-      - ./logs/nginx:/var/log/nginx
+      - ./openresty/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf:ro
+      - ./openresty/logs:/var/log/nginx
       - /home/twkim/lamis-pulmorad/build:/var/www/html/main
       - /home/twkim/lamis-ohif/platform/viewer/dist:/var/www/html/ohif
     ports:
@@ -31,11 +31,11 @@ services:
       - DB_SCHEMA=public
       - DB_USER=${POSTGRES_USER}
       - DB_PASSWORD=${POSTGRES_PASSWORD}
-      #KEYCLOAK_IMPORT: /opt/jboss/keycloak/imports/realm-export.json -Dkeycloak.profile.feature.upload_scripts=enabled
+      - KEYCLOAK_IMPORT=/opt/jboss/keycloak/imports/realm-export.json -Dkeycloak.profile.feature.upload_scripts=enabled
     ports:
       - 8080:8080
     volumes:
-      #- ./keycloak/realm:/opt/jboss/keycloak/imports
+      - ./keycloak/realm:/opt/jboss/keycloak/imports
       - ./keycloak/theme:/opt/jboss/keycloak/themes/pulmorad
     depends_on:
       - postgres
