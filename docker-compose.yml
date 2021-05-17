@@ -52,16 +52,16 @@ services:
     depends_on:
       - postgres
 
-  # fastapi:
-  #   build:
-  #     context: ../lamis-fastapi
-  #     dockerfile: ./Dockerfile
-  #   image: fastapi
-  #   container_name: fastapi
-  #   ports:
-  #     - 8000:80
-  #   depends_on:
-  #     - postgres
+  fastapi:
+    build:
+      context: ../lamis-fastapi
+      dockerfile: ./Dockerfile
+    image: fastapi
+    container_name: fastapi
+    ports:
+      - 8000:80
+    depends_on:
+      - postgres
 
   postgres:
     image: postgres:13.2
