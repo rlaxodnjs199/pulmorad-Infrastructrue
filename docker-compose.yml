@@ -10,8 +10,7 @@ services:
     volumes:
       - ./openresty/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf:ro
       - ./openresty/logs:/var/log/nginx
-      - /home/twkim/lamis-pulmorad/build:/var/www/html/main
-      - /home/twkim/lamis-ohif/platform/viewer/dist:/var/www/html/ohif
+      - /home/twkim/lamis/lamis-docker/ohif:/var/www/html
     ports:
       - 80:80
     depends_on:
