@@ -17,12 +17,12 @@ services:
       - keycloak
 
   keycloak:
-    image: quay.io/keycloak/keycloak:13.0.0
+    image: quay.io/keycloak/keycloak:12.0.4
     container_name: keycloak
     restart: unless-stopped
     environment:
-      - KEYCLOAK_USER=${KEYCLOAK_USER}
-      - KEYCLOAK_PASSWORD=${KEYCLOAK_PASSWORD}
+      # - KEYCLOAK_USER=${KEYCLOAK_USER}
+      # - KEYCLOAK_PASSWORD=${KEYCLOAK_PASSWORD}
       - PROXY_ADDRESS_FORWARDING=true
       - DB_VENDOR=POSTGRES
       - DB_ADDR=postgres
@@ -30,7 +30,7 @@ services:
       - DB_SCHEMA=public
       - DB_USER=${POSTGRES_USER}
       - DB_PASSWORD=${POSTGRES_PASSWORD}
-      - KEYCLOAK_IMPORT=/opt/jboss/keycloak/imports/realm-export.json -Dkeycloak.profile.feature.upload_scripts=enabled
+      # - KEYCLOAK_IMPORT=/opt/jboss/keycloak/imports/realm-export.json -Dkeycloak.profile.feature.upload_scripts=enabled
     ports:
       - 8080:8080
     volumes:
