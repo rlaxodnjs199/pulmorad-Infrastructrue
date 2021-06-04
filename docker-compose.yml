@@ -11,7 +11,7 @@ services:
       - ./openresty/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf:ro
       - ./openresty/logs:/var/log/nginx
       - ./openresty/certs:/usr/local/openresty/nginx/certs
-      - /Users/chlee/Pulmorad/pulmorad-docker-local-v2/ohif:/var/www/html
+      # - /Users/chlee/Pulmorad22/pulmorad-docker-local-v2/ohif:/var/www/html
     ports:
       - 80:80
     depends_on:
