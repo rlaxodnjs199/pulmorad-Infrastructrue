@@ -1,5 +1,1 @@
-logs/
 .env
-certs/
-orthanc/storage/
-#openresty/nginx.conf
